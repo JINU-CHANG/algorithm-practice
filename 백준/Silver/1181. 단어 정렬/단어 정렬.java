@@ -5,7 +5,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -19,15 +19,14 @@ public class Main {
         StringTokenizer st = new StringTokenizer(br.readLine());
 
         int N = Integer.parseInt(st.nextToken());
-        Set<String> words = new HashSet<>();
+        List<String> words = new LinkedList<>();
 
         for (int i = 0; i < N; i ++) {
             st = new StringTokenizer(br.readLine());
             words.add(st.nextToken());
         }
 
-        List<String> purewords = new LinkedList<>(words); 
-        Collections.sort(purewords, new Comparator<String>() {
+        Collections.sort(words, new Comparator<String>() {
 
             @Override
             public int compare(String s1, String s2) {
@@ -41,7 +40,8 @@ public class Main {
             }
         });
 
-        for (String word : purewords) {
+        Set<String> pureWords = new LinkedHashSet<>(words);
+        for (String word : pureWords) {
             bw.write(word + "\n");
         }
         
