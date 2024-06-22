@@ -13,6 +13,11 @@ class Fxtion {
         this.x = x;
         this.y = y;
     }
+
+    Fxtion(Fxtion first, Fxtion second) {
+        this.x = first.x + second.x;
+        this.y = first.y + second.y;
+    }
 }
 
 public class Main {
@@ -47,7 +52,7 @@ public class Main {
             Fxtion first = fxtions.get(i - 1);
             Fxtion second = fxtions.get(i - 2);
 
-            Fxtion fn = new Fxtion((first.x + second.x), (first.y + second.y));
+            Fxtion fn = new Fxtion(first, second);
 
             fxtions.add(fn);
         }
