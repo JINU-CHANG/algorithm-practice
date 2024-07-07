@@ -1,14 +1,13 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main {
 
     static int N, M;
-    static List<Integer> ans = new ArrayList<>();
+    static int[] ans;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -16,28 +15,23 @@ public class Main {
 
         N = Integer.parseInt(st.nextToken());
         M = Integer.parseInt(st.nextToken());
+        ans = new int[M];
 
-        for (int i = 1; i <= N; i++) {
-            find(i, 0);
-            ans.clear();
-        }
+        find(1, 0);
     }
 
     public static void find(int x, int num) {
-        if (x <= N && num < M) {
-            num++;
-            ans.add(x);
-        }
-
         if (num == M) {
-            ans.forEach(a -> System.out.print(a + " "));
+            for (int i = 0; i < ans.length; i++) {
+                System.out.print(ans[i] + " ");
+            }
             System.out.println();
             return;
         }
 
-        for (int i = x + 1; i <= N; i++) {
-            find(i, num);
-            ans.remove(ans.size() - 1);
+        for (int i = x; i <= N; i++) {
+            ans[num] = i;
+            find(i + 1, num + 1);
         }
     }
 }
