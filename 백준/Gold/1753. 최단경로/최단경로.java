@@ -1,6 +1,8 @@
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.PriorityQueue;
@@ -24,6 +26,7 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
         StringTokenizer st = new StringTokenizer(br.readLine());
 
         int V = Integer.parseInt(st.nextToken());
@@ -53,11 +56,13 @@ public class Main {
 
         for (int i = 1; i < V + 1; i++) {
             if (dist[i] == Integer.MAX_VALUE) {
-                System.out.println("INF");
+                bw.write("INF" + "\n");
             } else {
-                System.out.println(dist[i]);
+                bw.write(dist[i] + "\n");
             }
         }
+
+        bw.flush();
     }
 
     public static void dijkstra(int start) {
