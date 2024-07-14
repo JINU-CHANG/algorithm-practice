@@ -21,7 +21,6 @@ class Node {
 public class Main {
 
     static List<List<Node>> graph;
-    static boolean[] visited;
     static int[] dist;
 
     public static void main(String[] args) throws IOException {
@@ -35,7 +34,6 @@ public class Main {
 
         graph = new ArrayList<>(V + 1);
         dist = new int[V + 1];
-        visited = new boolean[V + 1];
 
         for (int i = 0; i < V + 1; i++) {
             graph.add(new ArrayList<>());
@@ -74,12 +72,12 @@ public class Main {
         while (!queue.isEmpty()) {
             Node polled = queue.poll();
 
-            if (!visited[polled.v]) {
-                visited[polled.v] = true;
+            if (dist[polled.v] < polled.cost) {
+                continue;
             }
 
             for (Node next : graph.get(polled.v)) {
-                if (!visited[next.v] && dist[next.v] > polled.cost + next.cost) {
+                if (dist[next.v] > polled.cost + next.cost) {
                     dist[next.v] = polled.cost + next.cost;
                     queue.add(new Node(next.v, dist[next.v]));
                 }
