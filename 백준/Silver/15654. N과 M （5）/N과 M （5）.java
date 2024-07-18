@@ -1,10 +1,8 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
 
@@ -13,6 +11,10 @@ public class Main {
     static int N;
     static int M;
     static int[] arr;
+    static int[] ans;
+    static boolean[] visited;
+
+    static StringBuilder sb = new StringBuilder();
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -21,6 +23,8 @@ public class Main {
         N = Integer.parseInt(st.nextToken());
         M = Integer.parseInt(st.nextToken());
         arr = new int[N];
+        ans = new int[M];
+        visited = new boolean[N];
 
         st = new StringTokenizer(br.readLine());
         for (int i = 0; i < N; i++) {
@@ -28,33 +32,35 @@ public class Main {
         }
 
         Arrays.sort(arr);
-        
+
         for (int i = 0; i < N; i++) {
-            dfs(arr[i], new ArrayList<>());
+            dfs(i, 0);
         }
+
+        System.out.println(sb);
     }
 
-    public static void dfs(int idx, List<Integer> ans) {
-        ans.add(idx);
+    public static void dfs(int idx, int cnt) {
+        if (visited[idx]) return;
 
-        if (ans.size() == M) {
-            Set<Integer> set = new HashSet<>(ans);
-            if (set.size() != M) return;
+        ans[cnt] = arr[idx];
+        visited[idx] = true;
+        cnt++;
 
-            StringBuilder sb = new StringBuilder();
+        if (cnt == M) {
             for (int an : ans) {
                 sb.append(an).append(" ");
             }
 
-            System.out.println(sb);
+            sb.append("\n");
+            visited[idx] = false;
             return;
         }
 
         for (int i = 0; i < N; i++) {
-            if (arr[i] == idx) continue;
-
-            dfs(arr[i], ans);
-            ans.remove(ans.size() - 1);
+            dfs(i, cnt);
         }
+
+        visited[idx] = false;
     }
 }
