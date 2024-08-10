@@ -19,7 +19,7 @@ public class Main {
 
     static int n, k;
     static int[] time = new int[100_001]; // 방문하는 최소시간을 저장한다.
-    static int ans = 0; // 방법의 수
+    static int cnt = 0; // 방법의 수
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -32,13 +32,14 @@ public class Main {
         if (n == k) {
             sb.append(0).append("\n").append(1);
         } else {
-            sb.append(bfs(n)).append("\n").append(ans);
+            bfs(n);
+            sb.append(time[k]).append("\n").append(cnt);
         }
 
         System.out.println(sb);
     }
 
-    public static int bfs(int n) {
+    public static void bfs(int n) {
         int[] arr = new int[3];
         int dcnt;
         Queue<Info> queue = new ArrayDeque<>();
@@ -53,26 +54,25 @@ public class Main {
             dcnt = polled.cnt + 1;
 
             for (int i = 0; i < 3; i++) {
+                if (arr[i] < 0 || arr[i] > 100_000) continue; // 갈 수 없는 위치이면 큐에 넣지 않는다.
+                if (dcnt > time[arr[i]] && time[arr[i]] != 0) continue; // X까지 가는데 더 오랜시간이 걸리면 큐에 넣지 않는다.
+
                 if (arr[i] == k) {
                     while(!queue.isEmpty()) {
                         Info polled2 = queue.poll();
 
                         if (polled2.cnt != dcnt - 1) break;
-                        if (polled2.dx - 1 == k || polled2.dx + 1 == k || polled2.dx * 2 == k) ans++;
+                        if (polled2.dx - 1 == k || polled2.dx + 1 == k || polled2.dx * 2 == k) cnt++;
                     }
-                    ans++;
-                    return dcnt;
+                    cnt++;
+                    time[arr[i]] = dcnt;
+                    return;
                 }
-
-                if (arr[i] < 0 || arr[i] > 100_000) continue; // 갈 수 없는 위치이면 큐에 넣지 않는다.
-                if (dcnt > time[arr[i]] && time[arr[i]] != 0) continue; // X까지 가는데 더 오랜시간이 걸리면 큐에 넣지 않는다.
 
                 queue.add(new Info(arr[i], dcnt));
                 time[arr[i]] = dcnt;
             }
         }
-
-        return -1;
     }
 }
 
