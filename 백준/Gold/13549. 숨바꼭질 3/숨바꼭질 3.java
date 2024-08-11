@@ -1,55 +1,58 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.PriorityQueue;
+import java.util.ArrayDeque;
+import java.util.Queue;
 import java.util.StringTokenizer;
 
-class Info implements Comparable<Info> {
-    int x;
-    int s;
+class Info {
+    int dx;
+    int cnt;
 
-    Info(int x, int s) {
-        this.x = x;
-        this.s = s;
+    public Info(int dx, int cnt) {
+        this.dx = dx;
+        this.cnt = cnt;
     }
-
-    @Override
-    public int compareTo(Info o) {
-        if (this.s < o.s) return -1;
-        if  (this.s > o.s) return 1;
-        else return 0;
-    }
-
 }
 
 public class Main {
+
+    static int n, k;
+    static boolean[] vistied = new boolean[100_001];
+
     public static void main(String[] args) throws IOException {
-    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-    StringTokenizer st;
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
 
-    st = new StringTokenizer(br.readLine());
-    int N = Integer.parseInt(st.nextToken());
-    int K = Integer.parseInt(st.nextToken());
-
-    PriorityQueue<Info> queue = new PriorityQueue<>();
-
-    boolean[] chk = new boolean[100001];
-
-    queue.add(new Info(N,0));
-
-    while(!queue.isEmpty()) {
-        Info info = queue.poll();
-        if(info.x < 0 || info.x>100000) continue;
-        if(chk[info.x]) continue;
-        if(info.x==K) {
-            System.out.println(info.s);
-            break;
-        }
-        chk[info.x] = true;
-        queue.add(new Info((info.x-1), info.s+1));
-        queue.add(new Info((info.x+1), info.s+1));
-        queue.add(new Info((info.x*2), info.s));
+        n = Integer.parseInt(st.nextToken());
+        k = Integer.parseInt(st.nextToken());
+        System.out.print(bfs(n));
     }
 
+    public static int bfs(int n) {
+        int[] arr = new int[3];
+        int[] dcnt = {0, 1, 1};
+        Queue<Info> queue = new ArrayDeque<>();
+        queue.add(new Info(n, 0));
+
+        while (!queue.isEmpty()) {
+            Info polled = queue.poll();
+            if (polled.dx == k) {
+                return polled.cnt;
+            }
+            arr[0] = polled.dx * 2;
+            arr[1] = polled.dx - 1;
+            arr[2] = polled.dx + 1;
+
+            for (int i = 0; i < 3; i++) {
+                if (arr[i] >= 0 && arr[i] <= 100_000 && !vistied[arr[i]]) {
+                    queue.add(new Info(arr[i], dcnt[i] + polled.cnt));
+                    vistied[arr[i]] = true;
+                }
+            }
+        }
+        
+        return -1;
+    }
 }
-}
+
