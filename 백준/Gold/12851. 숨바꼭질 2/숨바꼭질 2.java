@@ -36,7 +36,7 @@ public class Main {
             sb.append(time[k]).append("\n").append(cnt);
         }
 
-        System.out.println(sb);
+        System.out.print(sb);
     }
 
     public static void bfs(int n) {
