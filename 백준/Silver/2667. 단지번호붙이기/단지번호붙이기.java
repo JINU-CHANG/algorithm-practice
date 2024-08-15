@@ -12,7 +12,6 @@ public class Main {
     static int[][] map;
     static int[] dx = {0 , 0, -1, 1};
     static int[] dy = {-1, 1, 0, 0};
-    static int cnt = 0;
     static List<Integer> ans = new ArrayList<>();
 
     public static void main(String[] args) throws IOException {
@@ -34,9 +33,7 @@ public class Main {
         for (int y = 0; y < n; y++) {
             for (int x = 0; x < n; x++) {
                 if (map[y][x] == 1 && !visited[y][x]) {
-                    dfs(y, x);
-                    ans.add(cnt);
-                    cnt = 0;
+                    ans.add(dfs(y, x));
                 }
             }
         }
@@ -48,10 +45,10 @@ public class Main {
         System.out.println(sb);
     }
 
-    public static void dfs(int y, int x) {
+    public static int dfs(int y, int x) {
         visited[y][x] = true;
-        cnt++;
-        
+        int cnt = 1;
+
         for (int i = 0; i < 4; i++) {
             int ny = y + dy[i];
             int nx = x + dx[i];
@@ -60,7 +57,10 @@ public class Main {
             if (visited[ny][nx]) continue;
             if (map[ny][nx] == 0) continue;
 
-            dfs(ny, nx);
+            cnt += dfs(ny, nx);
         }
+
+        return cnt;
     }
 }
+
