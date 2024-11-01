@@ -7,6 +7,7 @@ public class Main {
 
     static int[] array;
     static int n;
+    static StringBuilder sb = new StringBuilder();
 
     public static void main(String[] args) throws IOException {
        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -21,6 +22,7 @@ public class Main {
        }
 
        solve();
+        System.out.println(sb);
     }
 
     public static void solve() {
@@ -42,7 +44,7 @@ public class Main {
                 minIdx = realMinIdx;
             }
 
-            System.out.print(array[maxIdx] - array[minIdx] + " ");
+            sb.append(array[maxIdx] - array[minIdx]).append(" ");
 
             if (array[i] < array[realMinIdx]) {
                 realMinIdx = i;
