@@ -21,7 +21,7 @@ public class Main {
             st = new StringTokenizer(br.readLine());
             A = Integer.parseInt(st.nextToken());
             B = Integer.parseInt(st.nextToken());
-            
+
             sb.append(bfs(A)).append("\n");
         }
 
@@ -91,43 +91,10 @@ public class Main {
     }
 
     public static int calculateL(int x) {
-        String s = String.valueOf(x);
-        char[] cs = {'0', '0', '0', '0'};
-        for (int i = 0; i < s.length(); i++) {
-            cs[i + (4 - s.length())] = s.charAt(i);
-        }
-
-        char temp = cs[cs.length - 1];
-        for (int i = cs.length - 1; i > 0; i--) {
-            char bi = cs[i - 1];
-            char ci = temp;
-            cs[i - 1] = ci;
-            temp = bi;
-        }
-
-        cs[cs.length - 1] = temp;
-
-        return Integer.parseInt(String.valueOf(cs));
+        return (x % 1000) * 10 + (x / 1000);
     }
 
     public static int calculateR(int x) {
-        String s = String.valueOf(x);
-        char[] cs = {'0', '0', '0', '0'};
-        for (int i = 0; i < s.length(); i++) {
-            cs[i + (4 - s.length())] = s.charAt(i);
-        }
-
-        char temp = cs[0];
-        for (int i = 0; i < cs.length - 1; i++) {
-            char ni = cs[i + 1];
-            char ci = temp;
-            cs[i + 1] = ci;
-            temp = ni;
-        }
-
-        cs[0] = temp;
-
-        return Integer.parseInt(String.valueOf(cs));
+        return (x % 10) * 1000 + (x / 10);
     }
-
 }
