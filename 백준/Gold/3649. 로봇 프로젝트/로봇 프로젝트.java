@@ -2,13 +2,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
 public class Main {
 
     static int x, n;
-    static Map<Integer, Integer> map;
     static int[] length;
     static StringBuilder sb = new StringBuilder();
 
@@ -20,14 +17,8 @@ public class Main {
             n = Integer.parseInt(br.readLine());
 
             length = new int[n];
-            map = new HashMap<>();
             for (int i = 0; i < n; i++) {
                 int l = Integer.parseInt(br.readLine());
-                if (map.containsKey(l)) {
-                    map.put(l, map.get(l) + 1);
-                } else {
-                    map.put(l, 1);
-                }
                 length[i] = l;
             }
 
