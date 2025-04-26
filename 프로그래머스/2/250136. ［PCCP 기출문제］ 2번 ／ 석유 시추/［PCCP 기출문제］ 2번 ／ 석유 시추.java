@@ -6,7 +6,6 @@ class Solution {
     static int[] dx = {0, 0, -1, 1};
     static int ySize, xSize;
     static int[][] visited;
-    static int count = 0;
     
     public int solution(int[][] land) {
         int answer = Integer.MIN_VALUE;
@@ -21,12 +20,10 @@ class Solution {
         for (int i = 0; i < ySize; i++) {
             for (int j = 0; j < xSize; j++) {
                 if (land[i][j] == 0 || visited[i][j] > 0) continue;
-                count++;
                 visited[i][j] = num;
-                dfs(land, i, j, num);
+                int count = dfs(land, i, j, num);
                 map.put(num, count);
                 num++;
-                count = 0;
             }
         }
         
@@ -45,16 +42,18 @@ class Solution {
         return answer;
     }
     
-    private void dfs(int[][] land, int y, int x, int num) {
+    private int dfs(int[][] land, int y, int x, int num) {
+        int cnt = 1;
         for (int i = 0; i < 4; i++) {
             int ny = y + dy[i];
             int nx = x + dx[i];
             
             if (ny >= ySize || nx >= xSize || ny < 0 || nx < 0) continue;
             if (visited[ny][nx] > 0 || land[ny][nx] == 0) continue;
-            count++;
             visited[ny][nx] = num;
-            dfs(land, ny, nx, num);
+            cnt += dfs(land, ny, nx, num);
         }
+        
+        return cnt;
     }
 }
