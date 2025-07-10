@@ -27,6 +27,10 @@ class Info implements Comparable<Info> {
 
 public class Main {
 
+    static Queue<Integer> pq = new PriorityQueue<>();
+    static int ws;
+    static int we;
+    static int sum = 0;
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
@@ -39,11 +43,8 @@ public class Main {
             list.add(info);
         }
         Collections.sort(list);
-
-        Queue<Integer> pq = new PriorityQueue<>();
-        int ws = list.get(0).s;
-        int we = list.get(0).e;
-        pq.add(list.get(0).e);
+        
+        initialize(list.get(0));
         int sum = 0;
 
         for (int i = 1; i < n; i++) {
@@ -56,23 +57,28 @@ public class Main {
                 }
                 pq.add(now.e);
             } else {
-                int w = we - ws + 1;
-                int h = pq.size();
-                sum += w * h;
-
-                ws = now.s;
-                we = now.e;
-                pq = new PriorityQueue<>();
-                pq.add(now.e);
+                sum += calculateSize();
+                initialize(now);
             }
         }
 
         if (!pq.isEmpty()) {
-            int w = we - ws + 1;
-            int h = pq.size();
-            sum += w * h;
+            sum += calculateSize();
         }
 
         System.out.println(sum);
+    }
+
+    private static void initialize(Info info) {
+        ws = info.s;
+        we = info.e;
+        pq = new PriorityQueue<>();
+        pq.add(info.e);
+    }
+    
+    private static int calculateSize() {
+        int w = we - ws + 1;
+        int h = pq.size();
+        return w * h;
     }
 }
