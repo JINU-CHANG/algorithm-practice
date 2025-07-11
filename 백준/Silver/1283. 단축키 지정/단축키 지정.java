@@ -15,38 +15,38 @@ public class Main {
 
         Set<Character> set = new HashSet<>();
         for (int i = 0; i < n; i++) {
-            String s = br.readLine(); // Save As
-            String[] sArray = s.split(" ");  // Save,As
-            int idx = -1;
+            String option = br.readLine();
+            String[] words = option.split(" ");
+            int keyIdx = -1;
 
-            int count = 0;
-            for (String x : sArray) {
+            int length = 0;
+            for (String x : words) {
                 char c = x.charAt(0);
                 if (!set.contains(Character.toUpperCase(c)) && !set.contains(Character.toLowerCase(c))) {
                     set.add(c);
-                    if (count == 0) idx = 0;
-                    else idx = count;
+                    if (length == 0) keyIdx = 0;
+                    else keyIdx = length;
                     break;
                 }
-                count += x.length() + 1;
+                length += x.length() + 1;
             }
 
-            if (idx == -1) {
-                for (int j = 0; j < s.length(); j++) {
-                    char c = s.charAt(j);
+            if (keyIdx == -1) {
+                for (int j = 0; j < option.length(); j++) {
+                    char c = option.charAt(j);
                     if (c != ' ' && !set.contains(Character.toUpperCase(c)) && !set.contains(Character.toLowerCase(c))) {
                         set.add(c);
-                        idx = j;
+                        keyIdx = j;
                         break;
                     }
                 }
             }
 
-            for (int j = 0; j < s.length(); j++) {
-                if (j == idx) {
-                    sb.append("[").append(s.charAt(j)).append("]");
+            for (int j = 0; j < option.length(); j++) {
+                if (j == keyIdx) {
+                    sb.append("[").append(option.charAt(j)).append("]");
                 } else {
-                    sb.append(s.charAt(j));
+                    sb.append(option.charAt(j));
                 }
             }
             sb.append("\n");
