@@ -1,9 +1,6 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class Main {
 
@@ -17,22 +14,18 @@ public class Main {
             String str = br.readLine();
             int k = Integer.parseInt(br.readLine());
 
-            Map<Character, List<Integer>> map = new HashMap<>();
+            ArrayList<Integer>[] list = new ArrayList[26];
+            for (int i = 0; i < 26; i++) {
+                list[i] = new ArrayList<>();
+            }
             for (int i = 0; i < str.length(); i++) {
-                char c = str.charAt(i);
-                if (map.containsKey(c)) {
-                    List<Integer> list = map.get(c);
-                    list.add(i);
-                } else {
-                    List<Integer> nList = new ArrayList<>();
-                    nList.add(i);
-                    map.put(c, nList);
-                }
+                int idx = str.charAt(i) - 'a';
+                list[idx].add(i);
             }
 
             int max = Integer.MIN_VALUE;
             int min = Integer.MAX_VALUE;
-            for (List<Integer> l : map.values()) {
+            for (ArrayList<Integer> l : list) {
                 int sIdx = 0;
                 for (int eIdx = 0; eIdx < l.size(); eIdx++) {
                     if (eIdx - sIdx == k - 1) {
