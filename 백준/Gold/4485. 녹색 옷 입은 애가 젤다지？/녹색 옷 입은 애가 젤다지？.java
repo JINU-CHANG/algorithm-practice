@@ -1,7 +1,7 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.Arrays;
-import java.util.LinkedList;
+import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.StringTokenizer;
 
@@ -39,7 +39,7 @@ public class Main {
                 }
             }
 
-            Queue<int[]> queue = new LinkedList<>();
+            Queue<int[]> queue = new PriorityQueue<>((o1, o2) -> o1[2] - o2[2]);
             queue.add(new int[]{0, 0, map[0][0]});
             dp[0][0] = map[0][0];
 
@@ -54,7 +54,7 @@ public class Main {
                     if (dp[ny][nx] <= polled[2] + map[ny][nx]) continue;
 
                     dp[ny][nx] = polled[2] + map[ny][nx];
-                    queue.add(new int[]{ny, nx, dp[ny][nx]});
+                    queue.offer(new int[]{ny, nx, dp[ny][nx]});
                 }
             }
 
