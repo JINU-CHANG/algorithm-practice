@@ -32,27 +32,12 @@ public class Main {
                     minpq.add(x);
                     maxpq.add(x);
 
-                    if (map.containsKey(x)) {
-                        map.put(x, map.get(x) + 1);
-                    } else {
-                        map.put(x, 1);
-                    }
+                    map.put(x, map.getOrDefault(x, 0) + 1);
                 } else {
                     if (x == -1) {
-                        while (!minpq.isEmpty() && map.get(minpq.peek()) == 0) {
-                            minpq.poll();
-                        }
-
-                        if (minpq.isEmpty()) continue;
-                        map.put(minpq.peek(), map.get(minpq.peek()) - 1);
-                        minpq.poll();
-                    } else if (x == 1) {
-                        while (!maxpq.isEmpty() && map.get(maxpq.peek()) == 0) {
-                            maxpq.poll();
-                        }
-                        if (maxpq.isEmpty()) continue;
-                        map.put(maxpq.peek(), map.get(maxpq.peek()) - 1);
-                        maxpq.poll();
+                        delete(minpq, map);
+                    } else {
+                        delete(maxpq, map);
                     }
                 }
 
@@ -62,21 +47,28 @@ public class Main {
             while (!maxpq.isEmpty() && map.get(maxpq.peek()) == 0) {
                 maxpq.poll();
             }
-
-            if (maxpq.isEmpty()) {
-                sb.append("EMPTY").append("\n");
-                continue;
-            } else {
-                sb.append(maxpq.peek()).append(" ");
-            }
-
             while (!minpq.isEmpty() && map.get(minpq.peek()) == 0) {
                 minpq.poll();
             }
 
-            sb.append(minpq.peek()).append("\n");
+            if (maxpq.isEmpty()) {
+                sb.append("EMPTY").append("\n");
+            } else {
+                sb.append(maxpq.peek()).append(" ");
+                sb.append(minpq.peek()).append("\n");
+            }
         }
 
         System.out.println(sb);
+    }
+
+    private static void delete(PriorityQueue<Integer> pq, Map<Integer, Integer> map) {
+        while (!pq.isEmpty() && map.get(pq.peek()) == 0) {
+            pq.poll();
+        }
+
+        if (pq.isEmpty()) return;
+        map.put(pq.peek(), map.get(pq.peek()) - 1);
+        pq.poll();
     }
 }
