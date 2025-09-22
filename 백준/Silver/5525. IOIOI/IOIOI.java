@@ -1,48 +1,39 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Stack;
 
 public class Main {
-
-    static int n, m;
-    static String s;
-    static List<Integer> counts = new ArrayList<>();
-    static int ans = 0;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        n = Integer.parseInt(br.readLine());
-        m = Integer.parseInt(br.readLine());
-        s = br.readLine();
+        int n = Integer.parseInt(br.readLine());
+        int m = Integer.parseInt(br.readLine());
+        String s = br.readLine();
 
-        // S 중에 연속되는 IO...I 체크
-        for (int i = s.length() - 1; i >= 0; i--) {
-            if (s.charAt(i) == 'I') {
-                search(0, i);
+        int length = n + n + 1;
+        int ans = 0;
+        Stack<Character> stack = new Stack<>();
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+
+            if (shouldRemove(stack, c)) {
+                stack = new Stack<>();
             }
+
+            stack.push(c);
+            if (c == 'I' && stack.size() >= length) ans++;
         }
 
         System.out.println(ans);
     }
 
-    private static void search(int count, int startIdx) {
-        for (int i = startIdx; i >= 0; i--) {
-            if (n == count) {
-                if (s.charAt(i) == 'I') {
-                    ans += 1;
-                }
-                return;
-            }
+    private static boolean shouldRemove(Stack<Character> stack, char c) {
+        if (!stack.isEmpty() && stack.peek() == 'O' && c != 'I') return true;
+        if (!stack.isEmpty() && stack.peek() == 'I' && c != 'O') return true;
+        if (stack.isEmpty() && c != 'I') return true;
 
-            if (i >= 1 && s.charAt(i - 1) == 'O' && s.charAt(i) == 'I') {
-                count += 1;
-                i--;
-            } else {
-                return;
-            }
-        }
+        return false;
     }
 }
