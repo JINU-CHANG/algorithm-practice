@@ -1,16 +1,12 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 import java.util.StringTokenizer;
 
 public class Main {
 
     static int n;
     static int[][] map;
-    static int[] start;
+    static boolean[] visited;
     static int ans = Integer.MAX_VALUE;
 
     public static void main(String[] args) throws Exception {
@@ -18,7 +14,7 @@ public class Main {
         n = Integer.parseInt(br.readLine());
 
         map = new int[n + 1][n + 1];
-        start = new int[n / 2];
+        visited = new boolean[n + 1];
 
         for (int i = 0; i < n; i++) {
             StringTokenizer st = new StringTokenizer(br.readLine());
@@ -36,50 +32,27 @@ public class Main {
 
     private static void dfs(int x, int cnt) {
         if (cnt == n / 2) {
-            int startResult = calculate(start);
-            int linkResult = calculate(makeLink());
-            //System.out.println(Arrays.toString(start));
-            ans = Math.min(ans, Math.abs(startResult - linkResult));
+            ans = Math.min(ans, Math.abs(calculateDiff()));
             return;
         }
 
         for (int i = x; i <= n; i++) {
-            start[cnt] = i;
+            visited[x] = true;
             dfs(i + 1, cnt + 1);
+            visited[x] = false;
         }
     }
 
-    private static int[] makeLink() {
-        Set<Integer> set = new HashSet<>();
-        for (int i = 0; i < start.length; i++) {
-            set.add(start[i]);
-        }
-
-        List<Integer> link = new ArrayList<>();
+    private static int calculateDiff() {
+        int startSum = 0;
+        int linkSum = 0;
         for (int i = 1; i <= n; i++) {
-            if (set.contains(i)) continue;
-
-            link.add(i);
-        }
-
-        int[] linkArr = new int[n/2];
-        for (int i = 0; i < link.size(); i++) {
-            linkArr[i] = link.get(i);
-        }
-
-        return linkArr;
-    }
-
-    private static int calculate(int[] arr) {
-        int sum = 0;
-        for (int i = 0; i < arr.length; i++) {
-            for (int j = 0; j < arr.length; j++) {
+            for (int j = 1; j <= n; j++) {
                 if (i == j) continue;
-                int y = arr[i];
-                int x = arr[j];
-                sum += map[y][x];
+                if (visited[i] && visited[j]) startSum += map[i][j];
+                else if (!visited[i] && !visited[j]) linkSum += map[i][j];
             }
         }
-        return sum;
+        return Math.abs(startSum - linkSum);
     }
 }
