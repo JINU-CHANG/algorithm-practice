@@ -6,8 +6,8 @@ import java.util.StringTokenizer;
 public class Main {
 
     static int n, m;
-    static String[] guitar;
-    static String[] pick;
+    static long[] guitarMask;
+    static long[] pick;
     static int max = 0;
     static int ans = -1;
 
@@ -18,17 +18,22 @@ public class Main {
         n = Integer.parseInt(st.nextToken());
         m = Integer.parseInt(st.nextToken());
 
-        guitar = new String[n];
+        guitarMask = new long[n];
         for (int i = 0; i < n; i++) {
             st = new StringTokenizer(br.readLine());
 
             st.nextToken();
-            String binary = st.nextToken().replace('Y', '1').replace('N', '0');
-            guitar[i] = binary;
+            String binary = st.nextToken();
+
+            for(int j = 0; j < m; j++) {
+                if (binary.charAt(j) == 'Y') {
+                    guitarMask[i] |= (1L << j);
+                }
+            }
         }
 
         for (int i = 1; i <= n; i++) {
-            pick = new String[i];
+            pick = new long[i];
             back(-1, 0);
         }
 
@@ -38,9 +43,8 @@ public class Main {
     private static void back(int x, int count) {
         if (count == pick.length) {
             long sum = 0;
-
             for (int i = 0; i < pick.length; i++) {
-                sum |= Long.parseLong(pick[i], 2);
+                sum |= pick[i];
             }
 
             int cnt = Long.bitCount(sum);
@@ -52,8 +56,8 @@ public class Main {
             return;
         }
 
-        for (int i = x + 1; i < guitar.length; i++) {
-            pick[count] = guitar[i];
+        for (int i = x + 1; i < guitarMask.length; i++) {
+            pick[count] = guitarMask[i];
 
             back(i, count + 1);
         }
