@@ -1,38 +1,24 @@
 import java.util.*;
 
-class Info implements Comparable<Info> {
-    int start;
-    int end;
-    
-    Info(int start, int end) {
-        this.start = start;
-        this.end = end;
-    }
-    
-    public int compareTo(Info i) {
-        return this.end - i.end; // 오름차순
-    }
-}
-
 class Solution {
-    
     public int solution(int[][] routes) {
-        Queue<Info> pq = new PriorityQueue<>();    
-        for (int i = 0; i < routes.length; i++) {
-            pq.add(new Info(routes[i][0], routes[i][1]));
+        int answer = 0;
+        
+        // 출발순 정렬
+        Arrays.sort(routes, (i1, i2) -> {
+            return i1[1] - i2[1];
+        });
+        
+        // 기준
+        int last = routes[0][1];
+        answer++;
+        for (int i = 1; i < routes.length; i++) { 
+            if (routes[i][0] <= last) continue;
+            
+            last = routes[i][1];
+            answer++;
         }
         
-        Info current = pq.poll();
-        int count = 1;
-        
-        while (!pq.isEmpty()) {
-            Info polled = pq.poll();
-            if (polled.start <= current.end) continue;
-
-            current = polled;
-            count++;
-        }
-        
-        return count;
+        return answer;
     }
 }
