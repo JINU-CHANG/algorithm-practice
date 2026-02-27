@@ -1,32 +1,33 @@
 import java.util.*;
 
 class Solution {
-    
     public String solution(String number, int k) {
         String answer = "";
         
-        int sIdx = 0;
-        int eIdx = number.length() - (number.length() - k - 1);
-        for (int i = 0; i < number.length() - k; i++) {
-            int maxIdx = search(number, sIdx, eIdx);
-            answer += number.charAt(maxIdx);
-            sIdx = maxIdx + 1;
-            if (eIdx < number.length()) eIdx++;
-        }
-        
-        return answer;
-    }
-    
-    private int search(String number, int sIdx, int eIdx) {
-        int max = Integer.MIN_VALUE;
-        int maxIdx = eIdx;
-        for (int i = sIdx; i < eIdx; i++) {
-            if (number.charAt(i) > max) {
-                maxIdx = i;
-                max = number.charAt(i);
+        Stack<Integer> stack = new Stack<>();
+        for (int i = 0; i < number.length(); i++) {
+            int x = number.charAt(i) - '0';
+            if (stack.isEmpty()) {
+                stack.push(x);
+                continue;
             }
+            
+            while (!stack.isEmpty() && k > 0 && stack.peek() < x) {
+                stack.pop();
+                k--;
+            }
+            
+            stack.push(x);
         }
         
-        return maxIdx;
+        while (k > 0) {
+            stack.pop();
+            k--;
+        }
+        
+        for (int i = 0; i < stack.size(); i++) {
+            answer += stack.get(i);
+        }
+        return answer;
     }
 }
