@@ -1,58 +1,49 @@
 import java.util.*;
 
-class Info {
-    String current;
-    Set<String> set;
-    
-    Info(String current, Set<String> set) {
-        this.current = current;
-        this.set = set;
-    }
-    
-    public boolean contains(String word) {
-        return set.contains(word);
-    }
-}
-
 class Solution {
     
-    public int solution(String begin, String target, String[] words) {
-        return bfs(begin, target, words);
-    }
+    boolean[] visited;
     
-    private int bfs(String begin, String target, String[] words) {
-        Queue<Info> queue = new ArrayDeque();
-        Set<String> set = new HashSet<>();
-        set.add(begin);
-        queue.add(new Info(begin, set));
+    public int solution(String begin, String target, String[] words) {
+        int answer = 0;
         
-        while (!queue.isEmpty()) {
-            Info polled = queue.poll();
+        visited = new boolean[words.length];
+        Queue<int[]> q = new LinkedList<>();
+        q.add(new int[]{-1, 0});
+        
+        while (!q.isEmpty()) {
+            int[] polled = q.poll();   
             
             for (int i = 0; i < words.length; i++) {
-                if (!canChange(polled.current, words[i])) continue;
-                if (polled.contains(words[i])) continue;
+                if (visited[i]) continue;
                 
-                if (words[i].equals(target)) return polled.set.size();
-                    
-                Set<String> nset = new HashSet<>(polled.set);
-                nset.add(words[i]);
-                queue.add(new Info(words[i], nset));
+                // 한글자 바뀌는지 체크
+                String str1;
+                if (polled[0] == -1) {
+                    str1 = begin;
+                } else {
+                    str1 = words[polled[0]];
+                }
+                String str2 = words[i];
+                
+                if (str1.length() != str2.length()) continue;
+                
+                int count = 0;
+                for (int j = 0; j < str1.length(); j++) {
+                    if (str1.charAt(j) != str2.charAt(j)) count++;
+                }
+                
+                if (count == 1 && str2.equals(target)) {
+                    return polled[1] + 1;
+                }
+                
+                if (count == 1) {
+                    visited[i] = true;
+                    q.add(new int[]{i, polled[1] + 1});
+                }
             }
         }
-                    
-        return 0;
-    }
-                    
-    private boolean canChange(String string1, String string2) {
-        Arrays.sort(string1.toCharArray());
-        Arrays.sort(string2.toCharArray());
         
-        int count = 0;
-        for (int i = 0; i < string1.length(); i++) {
-            if (string1.charAt(i) != string2.charAt(i)) count++;
-        }
-        
-        return count == 1;
+        return answer;
     }
 }
