@@ -2,41 +2,50 @@ import java.util.*;
 
 class Solution {
     
-    static char[] result;
-    static boolean[] visited;
-    static Set<Integer> set = new HashSet<>();
+    boolean[] visited;
+    char[] temp;
+    Set<Integer> set = new HashSet<>();
     
     public int solution(String numbers) {
-        visited = new boolean[numbers.length()];
+        int answer = 0;
         
         for (int i = 1; i <= numbers.length(); i++) {
-            result = new char[i];
-            dfs(-1, -1, numbers, i);
+            visited = new boolean[numbers.length()];
+            temp = new char[i];
+            search(i, numbers, 0);
         }
-        return set.size();
+        
+        for (int x : set) {
+            if (check(x)) answer++;
+        }
+        
+        return answer;
     }
     
-    private static void dfs(int idx, int cnt, String numbers, int length) {
-        if (cnt == length - 1) {
-            int x = Integer.parseInt(String.valueOf(result));
-
-            if (x == 0 || x == 1) return;
-            for (int i = 2; i < x; i++) {
-                if (x % i == 0) return;
-            }
-            
-            set.add(x);
-            return;
+    private void search(int n, String numbers, int count) {
+        if (count == n) {
+            set.add(Integer.parseInt(String.valueOf(temp)));
+            return;    
         }
         
         for (int i = 0; i < numbers.length(); i++) {
-            if (i == idx) continue;
             if (visited[i]) continue;
             
             visited[i] = true;
-            result[cnt + 1] = numbers.charAt(i);
-            dfs(i, cnt + 1, numbers, length);
+            temp[count] = numbers.charAt(i);
+            search(n, numbers, count + 1);
             visited[i] = false;
         }
+    }
+    
+    private boolean check(int x) {
+        if (x == 1) return false;
+        int count = 0;
+        for (int i = 1; i <= x; i++) {
+            if (x % i == 0) count++;
+        }
+        
+        if (count == 2) return true;
+        else return false;
     }
 }
