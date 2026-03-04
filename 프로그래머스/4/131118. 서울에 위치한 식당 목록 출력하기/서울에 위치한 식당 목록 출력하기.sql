@@ -5,13 +5,11 @@
 # 평균 점수 기준으로 내림차순, 즐겨찾기 수 기준으로 내림차순
 
 select 
-i.rest_id, i.rest_name, 
+distinct i.rest_id, i.rest_name, 
 i.food_type, i.favorites, 
-i.address, sub.score as score
+i.address,
+round(avg(r.review_score) over (partition by rest_id), 2) as score
 from REST_INFO as i
-join (
-    select rest_id, round(avg(review_score), 2) as score from rest_review
-    group by rest_id
-) as sub on sub.rest_id = i.rest_id
+join rest_review as r on r.rest_id = i.rest_id
 where address like '서울%'
 order by score desc, favorites desc;
