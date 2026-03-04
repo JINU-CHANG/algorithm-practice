@@ -1,4 +1,10 @@
 -- 코드를 작성해주세요
+
+with percent_rk as (
+      select id, percent_rank() over (order by size_of_colony desc) as rk
+      from ECOLI_DATA  
+)
+
 select id,
 case 
     when rk * 100 <= 25 then 'CRITICAL'
@@ -6,8 +12,5 @@ case
     when rk * 100 <= 75 then 'MEDIUM'
     else 'LOW'
 end as 'colony_name'
-from (
-    select id, percent_rank() over (order by size_of_colony desc) as rk
-    from ECOLI_DATA   
-) as sub
+from percent_rk
 order by id asc;
