@@ -1,10 +1,9 @@
 -- 코드를 입력하세요
 
-select FOOD_TYPE, REST_ID, REST_NAME, FAVORITES
-from REST_INFO
-where (FOOD_TYPE, FAVORITES) IN (
-    select FOOD_TYPE, MAX(FAVORITES)
-    from REST_INFO
-    group by FOOD_TYPE    
-)
-order by FOOD_TYPE DESC;
+select food_type, rest_id, rest_name, favorites
+from (
+    select food_type, rest_id, rest_name, favorites, 
+    row_number() over (partition by food_type order by favorites desc) as rk
+    from rest_info as r 
+) as sub where rk <= 1
+order by food_type desc;
