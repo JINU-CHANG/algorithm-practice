@@ -18,9 +18,9 @@ public class Main {
         if (n == 0) return 1;
         else if (n % 2 == 0) {
             long half = recursive(a, n / 2, c);
-            return ((half * half) % c) % c;
+            return half * half % c;
         } else {
-            long half = recursive(a, (n - 1) / 2, c) % c;
+            long half = recursive(a, (n - 1) / 2, c);
             return ((half * half % c) * a) % c;
         }
     }
